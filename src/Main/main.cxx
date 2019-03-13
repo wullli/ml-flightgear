@@ -82,10 +82,10 @@ extern bool global_crashRptEnabled;
 #include "screensaver_control.hxx"
 #include "subsystemFactory.hxx"
 #include "options.hxx"
+#include "later.hxx"
 
 #include <simgear/embedded_resources/EmbeddedResourceManager.hxx>
 #include <EmbeddedResources/FlightGear-resources.hxx>
-
 #if defined(HAVE_QT)
 #include <GUI/QtLauncher.hxx>
 #endif
@@ -100,6 +100,7 @@ using std::vector;
 extern int _bootstrap_OSInit;
 
 static SGPropertyNode_ptr frame_signal;
+static bool terminated = FALSE;
 
 // What should we do when we have nothing else to do?  Let's get ready
 // for the next move and update the display?
@@ -123,6 +124,19 @@ static void fgMainLoop( void )
     globals->get_subsystem_mgr()->update(sim_dt);
 
     simgear::AtomicChangeListener::fireChangeListeners();
+}
+
+
+static void fgIoLoop()
+{
+    auto timeManager = globals->get_subsystem<TimeManager>();
+    // compute simulated time (allowing for pause, warp, etc) and
+    // real elapsed time
+    double sim_dt, real_dt;
+    timeManager->computeTimeDeltas(sim_dt, real_dt);
+    auto ioManager = (FGIO*)globals->get_subsystem("io") ;
+    ioManager->update(sim_dt);
+    later fgIoLoop(10, false, &fgIoLoop);
 }
 
 static void initTerrasync()
@@ -238,6 +252,7 @@ static void registerMainLoop()
     // stash current frame signal property
     frame_signal = fgGetNode("/sim/signals/frame", true);
     fgRegisterIdleHandler( fgMainLoop );
+    later fgIoLoop(10, false, &fgIoLoop);
 }
 
 // This is the top level master main function that is registered as

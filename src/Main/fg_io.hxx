@@ -45,7 +45,6 @@ public:
     void bind();
     void unbind();
     void update( double dt );
-
     void shutdown();
 
 private:

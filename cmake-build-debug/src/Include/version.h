@@ -1,0 +1,6 @@
+
+#define FLIGHTGEAR_VERSION "2018.3.2"
+
+
+
+

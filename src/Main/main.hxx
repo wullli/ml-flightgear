@@ -20,6 +20,7 @@
 
 #ifndef __FG_MAIN_HXX
 #define __FG_MAIN_HXX 1
+#include <thread>
 
 int fgMainInit( int argc, char **argv );
 

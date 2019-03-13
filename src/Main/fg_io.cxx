@@ -375,7 +375,7 @@ FGIO::reinit()
 {
 }
 
-// process any IO channel work
+
 void
 FGIO::update( double /* delta_time_sec */ )
 {
