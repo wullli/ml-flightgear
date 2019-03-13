@@ -379,6 +379,12 @@ FGIO::reinit()
 void
 FGIO::update( double /* delta_time_sec */ )
 {
+
+}
+
+void
+FGIO::update_ext( double /* delta_time_sec */ )
+{
     // use wall-clock, not simulation, delta time, so that network
     // protocols update when the simulation is paused
     // see http://code.google.com/p/flightgear-bugs/issues/detail?id=125

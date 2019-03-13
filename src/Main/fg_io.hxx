@@ -45,6 +45,7 @@ public:
     void bind();
     void unbind();
     void update( double dt );
+    void update_ext( double dt );
     void shutdown();
 
 private:

@@ -82,7 +82,6 @@ extern bool global_crashRptEnabled;
 #include "screensaver_control.hxx"
 #include "subsystemFactory.hxx"
 #include "options.hxx"
-#include "later.hxx"
 
 #include <simgear/embedded_resources/EmbeddedResourceManager.hxx>
 #include <EmbeddedResources/FlightGear-resources.hxx>
@@ -101,6 +100,7 @@ extern int _bootstrap_OSInit;
 
 static SGPropertyNode_ptr frame_signal;
 static bool terminated = FALSE;
+static std::thread* ioThread;
 
 // What should we do when we have nothing else to do?  Let's get ready
 // for the next move and update the display?
@@ -135,8 +135,8 @@ static void fgIoLoop()
     double sim_dt, real_dt;
     timeManager->computeTimeDeltas(sim_dt, real_dt);
     auto ioManager = (FGIO*)globals->get_subsystem("io") ;
-    ioManager->update(sim_dt);
-    later fgIoLoop(10, false, &fgIoLoop);
+    ioManager->update_ext(sim_dt);
+    sleep(1);
 }
 
 static void initTerrasync()
@@ -252,7 +252,7 @@ static void registerMainLoop()
     // stash current frame signal property
     frame_signal = fgGetNode("/sim/signals/frame", true);
     fgRegisterIdleHandler( fgMainLoop );
-    later fgIoLoop(10, false, &fgIoLoop);
+    ioThread = new std::thread(fgIoLoop);
 }
 
 // This is the top level master main function that is registered as

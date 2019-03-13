@@ -56,7 +56,7 @@ flightgear_component(Main "${SOURCES}" "${HEADERS}")
 # The main() function.
 set(MAIN_SOURCE
     bootstrap.cxx
-        later.hxx)
+        )
 
 # Set up the embedded resources.
 setup_fgfs_embedded_resources()
