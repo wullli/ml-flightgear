@@ -36,7 +36,7 @@ ScpCommand: /usr/bin/scp
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/opt/clion/bin/cmake/linux/bin/cmake" "/home/pawu/devel/ml-flightgear"
+ConfigureCommand: "/usr/bin/cmake" "/home/pawu/devel/ml-flightgear"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}" -- -i
 DefaultCTestConfigurationType: Release
 

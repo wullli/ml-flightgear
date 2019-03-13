@@ -129,14 +129,16 @@ static void fgMainLoop( void )
 
 static void fgIoLoop()
 {
-    auto timeManager = globals->get_subsystem<TimeManager>();
-    // compute simulated time (allowing for pause, warp, etc) and
-    // real elapsed time
-    double sim_dt, real_dt;
-    timeManager->computeTimeDeltas(sim_dt, real_dt);
-    auto ioManager = (FGIO*)globals->get_subsystem("io") ;
-    ioManager->update_ext(sim_dt);
-    sleep(1);
+    while(!terminated){
+        auto timeManager = globals->get_subsystem<TimeManager>();
+        // compute simulated time (allowing for pause, warp, etc) and
+        // real elapsed time
+        double sim_dt, real_dt;
+        timeManager->computeTimeDeltas(sim_dt, real_dt);
+        auto ioManager = (FGIO*)globals->get_subsystem("io") ;
+        ioManager->update_ext(sim_dt);
+        usleep(10000);
+    }
 }
 
 static void initTerrasync()
